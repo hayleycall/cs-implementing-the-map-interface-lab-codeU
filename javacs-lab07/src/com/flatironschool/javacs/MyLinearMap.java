@@ -63,7 +63,12 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 * @param target
 	 */
 	private Entry findEntry(Object target) {
-        // TODO: fill this in
+		// go through each key and see if it is equal to target
+		for (Entry currEntry : entries) {
+			if(equals(currEntry.getKey(), target)) {
+				return currEntry;
+			}
+		}
 		return null;
 	}
 
@@ -98,8 +103,15 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(Object key) {
-        // TODO: fill this in.
-		return null;
+        // use findKey to get key in list
+        Entry targetEntry = findEntry(key);
+        //make sure the entry actually exists
+        if (targetEntry == null) {
+        	return null;
+        }
+
+        // get value from target key
+        return targetEntry.getValue();
 	}
 
 	@Override
@@ -118,8 +130,20 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V put(K key, V value) {
-        // TODO: fill this in.
-        return null;
+		Entry currEntry = findEntry(key);
+        // first make sure this key doesn't already exist
+        if (currEntry != null) {
+        	V valueToReturn = currEntry.getValue();
+        	// it already exists, so just replace the value
+        	currEntry.setValue(value);
+        	return valueToReturn;
+        } else {
+        	// otherwise it doesn't already exits, so make a new entry
+        	Entry newEntry = new Entry(key, value);
+        	// add new entry to list
+        	entries.add(newEntry);
+        	return null;
+        }
 	}
 
 	@Override
@@ -131,8 +155,16 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-        // TODO: fill this in.
-        return null;
+        // first we need to make sure that this key exists
+        Entry currEntry = findEntry(key);
+        if (currEntry != null) {
+        	V valueToReturn = currEntry.getValue();
+        	// just use arraylist remove method
+        	entries.remove(currEntry);
+        	return valueToReturn;
+        } else {
+        	return null;
+        }
 	}
 
 	@Override
